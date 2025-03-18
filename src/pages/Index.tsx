@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PredictionForm } from '@/components/PredictionForm';
 import { ResultDisplay } from '@/components/ResultDisplay';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const [prediction, setPrediction] = useState<number | null>(null);
@@ -19,8 +18,8 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 p-4 sm:p-6 md:p-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50">
+      <div className="max-w-6xl mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -35,14 +34,24 @@ const Index = () => {
           </p>
         </motion.div>
 
-        <Tabs defaultValue="calculator" className="w-full">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
-            <TabsTrigger value="calculator">Calculator</TabsTrigger>
-            <TabsTrigger value="results" disabled={prediction === null && !isLoading}>Results</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="calculator">
-            <Card className="backdrop-blur-md bg-white/40 border-0 shadow-xl">
+        {/* Hero Image */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="flex justify-center mb-12"
+        >
+          <img 
+            src="https://source.unsplash.com/random/900x300/?insurance,healthcare" 
+            alt="Insurance Healthcare" 
+            className="rounded-xl shadow-lg object-cover h-64 w-full max-w-4xl"
+          />
+        </motion.div>
+
+        <div className="grid md:grid-cols-12 gap-8 items-start">
+          {/* Form Section */}
+          <div className="md:col-span-7">
+            <Card className="backdrop-blur-md bg-white/70 border-0 shadow-xl">
               <CardHeader>
                 <CardTitle className="text-center text-gray-800">Enter Your Details</CardTitle>
               </CardHeader>
@@ -50,41 +59,33 @@ const Index = () => {
                 <PredictionForm onSubmit={handlePredict} isLoading={isLoading} />
               </CardContent>
             </Card>
-          </TabsContent>
-          
-          <TabsContent value="results">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Card className="backdrop-blur-md bg-white/40 border-0 shadow-xl max-w-md mx-auto">
-                <CardHeader>
-                  <CardTitle className="text-center text-gray-800">Your Estimate</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ResultDisplay 
-                    prediction={prediction} 
-                    isLoading={isLoading} 
-                  />
-                </CardContent>
-              </Card>
-            </motion.div>
-          </TabsContent>
-        </Tabs>
-        
-        {prediction !== null && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="mt-8 text-center"
-          >
-            <p className="text-sm text-gray-500">
-              Want to see how changing your details affects your premium? Adjust your information and recalculate.
-            </p>
-          </motion.div>
-        )}
+          </div>
+
+          {/* Results Section */}
+          <div className="md:col-span-5">
+            <Card className="backdrop-blur-md bg-white/70 border-0 shadow-xl sticky top-8">
+              <CardHeader>
+                <CardTitle className="text-center text-gray-800">Your Estimate</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResultDisplay 
+                  prediction={prediction} 
+                  isLoading={isLoading} 
+                />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <motion.footer
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          className="mt-16 text-center py-6 border-t border-gray-200"
+        >
+          <p className="text-gray-600">Created by Harsh Jangid</p>
+        </motion.footer>
       </div>
     </div>
   );

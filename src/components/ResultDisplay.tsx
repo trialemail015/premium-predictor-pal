@@ -1,6 +1,6 @@
 
 import { motion } from 'framer-motion';
-import { Loader2, CheckCircle, DollarSign } from 'lucide-react';
+import { Loader2, CheckCircle, DollarSign, AlertCircle } from 'lucide-react';
 
 export const ResultDisplay = ({ 
   prediction,
@@ -10,18 +10,18 @@ export const ResultDisplay = ({
   isLoading: boolean;
 }) => {
   return (
-    <div className="space-y-6 py-4">
+    <div className="py-4">
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-12">
           <Loader2 className="w-12 h-12 animate-spin text-indigo-600 mb-4" />
           <p className="text-gray-600">Calculating your premium...</p>
         </div>
-      ) : (
+      ) : prediction ? (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, type: "spring" }}
-          className="flex flex-col items-center py-8"
+          className="flex flex-col items-center py-6"
         >
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center justify-center">
@@ -56,12 +56,28 @@ export const ResultDisplay = ({
             <span className="text-sm">Calculation complete</span>
           </div>
           
-          <div className="mt-8 p-4 bg-blue-50 rounded-lg max-w-sm">
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg w-full">
             <p className="text-sm text-gray-600">
               This is an estimated premium based on the provided information.
               Actual premiums may vary depending on additional factors and provider policies.
             </p>
           </div>
+        </motion.div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col items-center justify-center py-12 text-center"
+        >
+          <div className="bg-indigo-50 p-6 rounded-full mb-4">
+            <AlertCircle className="w-12 h-12 text-indigo-400" />
+          </div>
+          <h3 className="text-lg font-medium text-gray-800 mb-2">
+            No Prediction Yet
+          </h3>
+          <p className="text-gray-600 max-w-xs">
+            Fill out the form with your details and click "Predict Premium" to see your estimated insurance cost.
+          </p>
         </motion.div>
       )}
     </div>
