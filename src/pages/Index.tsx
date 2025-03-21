@@ -6,6 +6,8 @@ import { PredictionForm } from '@/components/PredictionForm';
 import { ResultDisplay } from '@/components/ResultDisplay';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from '@/components/ui/navigation-menu';
 import { Shield, Heart, HeartPulse } from 'lucide-react';
+import { predictPremium } from '@/utils/api';
+import { toast } from 'sonner';
 
 const Index = () => {
   const [prediction, setPrediction] = useState<number | null>(null);
@@ -13,10 +15,16 @@ const Index = () => {
 
   const handlePredict = async (formData: any) => {
     setIsLoading(true);
-    // Simulate API call for now
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setPrediction(5280.45);
-    setIsLoading(false);
+    try {
+      const premium = await predictPremium(formData);
+      setPrediction(premium);
+      toast.success("Premium calculated successfully!");
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error("Failed to calculate premium. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
